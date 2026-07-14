@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, ExternalLink, Moon, Sun } from "lucide-react";
+import { Github, Linkedin, ExternalLink, Moon, Sun, Download } from "lucide-react";
 import { portfolioData } from "./data";
 import ParticlesBackground from "../components/ParticlesBackground";
 import { useTheme } from "next-themes";
@@ -14,219 +14,283 @@ export default function Home() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="bg-base min-h-screen text-ink font-body selection:bg-accent2 selection:text-base relative transition-colors duration-300">
+    <div className="bg-base min-h-screen text-ink font-body selection:bg-accent2 selection:text-base relative transition-colors duration-300 overflow-x-hidden">
       
-      {/* Particles Background Layer */}
       <ParticlesBackground />
 
-      {/* Mouse Glow effect */}
-      <div className="pointer-events-none fixed inset-0 z-30 transition duration-300 hidden lg:block"
-           style={{ background: 'radial-gradient(600px at var(--x, 50%) var(--y, 50%), rgba(139, 92, 246, 0.15), transparent 80%)' }} 
-      />
-
-      <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0 relative z-10">
-        <div className="lg:flex lg:justify-between lg:gap-4">
+      {/* Floating Centered Navbar */}
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+        <div className="flex items-center gap-2 md:gap-8 px-6 py-3 backdrop-blur-md bg-white/5 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
+          {/* Brand/Name hidden on very small screens, visible on md */}
+          <div className="hidden md:flex items-center mr-4 font-bold tracking-tight text-ink">
+            {portfolioData.hero.name.split(" ")[0]}
+          </div>
           
-          {/* Left Panel - Sticky */}
-          <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight text-ink sm:text-5xl drop-shadow-sm">
-                {portfolioData.hero.name}
-              </h1>
-              <h2 className="mt-3 text-lg font-medium tracking-tight text-ink sm:text-xl">
-                {portfolioData.hero.headline}
-              </h2>
-              <p className="mt-4 max-w-xs leading-normal text-muted">
-                {portfolioData.hero.description}
-              </p>
-              
-              <nav className="nav hidden lg:block mt-16">
-                <ul className="mt-8 w-max">
-                  <li>
-                    <a className="group flex items-center py-3 active" href="#about">
-                      <span className="nav-indicator mr-4 h-px w-8 bg-muted transition-all group-hover:w-16 group-hover:bg-accent2 group-focus-visible:w-16 group-focus-visible:bg-accent2 motion-reduce:transition-none"></span>
-                      <span className="nav-text text-xs font-bold uppercase tracking-widest text-muted group-hover:text-ink group-focus-visible:text-ink">About</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a className="group flex items-center py-3" href="#experience">
-                      <span className="nav-indicator mr-4 h-px w-8 bg-muted transition-all group-hover:w-16 group-hover:bg-accent2 group-focus-visible:w-16 group-focus-visible:bg-accent2 motion-reduce:transition-none"></span>
-                      <span className="nav-text text-xs font-bold uppercase tracking-widest text-muted group-hover:text-ink group-focus-visible:text-ink">Experience</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a className="group flex items-center py-3" href="#projects">
-                      <span className="nav-indicator mr-4 h-px w-8 bg-muted transition-all group-hover:w-16 group-hover:bg-accent2 group-focus-visible:w-16 group-focus-visible:bg-accent2 motion-reduce:transition-none"></span>
-                      <span className="nav-text text-xs font-bold uppercase tracking-widest text-muted group-hover:text-ink group-focus-visible:text-ink">Projects</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+          <ul className="flex items-center gap-4 md:gap-6 text-sm font-medium text-muted">
+            <li><a href="#home" className="hover:text-ink transition-colors">Home</a></li>
+            <li><a href="#about" className="hover:text-ink transition-colors">About</a></li>
+            <li><a href="#experience" className="hover:text-ink transition-colors">Experience</a></li>
+            <li><a href="#projects" className="hover:text-ink transition-colors">Projects</a></li>
+            <li><a href="#contact" className="hover:text-ink transition-colors">Contact</a></li>
+          </ul>
+
+          {mounted && (
+            <button 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="ml-2 md:ml-4 text-muted hover:text-ink transition-colors p-1.5 rounded-full hover:bg-white/5"
+              aria-label="Toggle Dark Mode"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          )}
+        </div>
+      </nav>
+
+      <main className="relative z-10 pt-32 pb-24 max-w-screen-xl mx-auto px-6 md:px-12">
+        
+        {/* HERO SECTION - Exact Match */}
+        <section id="home" className="min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 pt-12 pb-24">
+          
+          {/* Left Column (Text & Buttons) */}
+          <div className="w-full lg:w-1/2 flex flex-col items-start text-left">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-muted text-lg mb-4 font-medium"
+            >
+              Hi, I'm <span className="text-ink font-bold">{portfolioData.hero.name}</span>
+            </motion.p>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-5xl md:text-7xl font-extrabold tracking-tight text-ink mb-6 leading-tight"
+            >
+              AI Solutions <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent2">
+                Builder
+              </span>
+            </motion.h1>
+
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl md:text-3xl font-semibold mb-6 h-10"
+            >
+              <div className="typing-container text-accent2">Machine Learning | Data</div>
+            </motion.h2>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-muted max-w-lg text-lg leading-relaxed mb-10"
+            >
+              I specialize in harnessing the power of Artificial Intelligence and Data Science to solve complex, real-world business challenges.
+            </motion.p>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-wrap gap-4"
+            >
+              <a href="#contact" className="px-8 py-3.5 bg-gradient-to-r from-accent2 to-purple-500 text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-1">
+                Let's Talk &rarr;
+              </a>
+              <a href="/Rahul_Kumar_Resume.pdf" target="_blank" className="px-8 py-3.5 bg-transparent border border-white/20 text-ink font-semibold rounded-lg hover:bg-white/5 transition-all duration-300 flex items-center gap-2">
+                <Download size={18} /> Download Resume
+              </a>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="mt-12 flex gap-4"
+            >
+              <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition">
+                <Github size={20} />
+              </a>
+              <a href={portfolioData.hero.socials.linkedin} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition">
+                <Linkedin size={20} />
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right Column (IDE Mockup) */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="w-full lg:w-1/2 relative mt-12 lg:mt-0"
+          >
+            {/* Floating Tech Badges */}
+            <div className="absolute -top-6 -left-6 z-20 px-4 py-2 backdrop-blur-md bg-base/80 border border-white/10 rounded-full text-sm font-semibold text-accent2 shadow-lg animate-bounce" style={{animationDuration: '3s'}}>
+              🐍 Python
+            </div>
+            <div className="absolute -bottom-6 -right-6 z-20 px-4 py-2 backdrop-blur-md bg-base/80 border border-white/10 rounded-full text-sm font-semibold text-accent shadow-lg animate-bounce" style={{animationDuration: '4s', animationDelay: '1s'}}>
+              ☁️ Cloud Data
             </div>
 
-            <ul className="mt-8 flex items-center gap-5" aria-label="Social media">
-              <li>
-                <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="text-muted hover:text-ink transition">
-                  <span className="sr-only">GitHub</span>
-                  <Github size={24} />
-                </a>
-              </li>
-              <li>
-                <a href={portfolioData.hero.socials.linkedin} target="_blank" rel="noreferrer" className="text-muted hover:text-ink transition">
-                  <span className="sr-only">LinkedIn</span>
-                  <Linkedin size={24} />
-                </a>
-              </li>
-              {/* Dark/Light Mode Toggle */}
-              {mounted && (
-                <li className="ml-4 border-l border-line pl-4">
-                  <button 
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className="text-muted hover:text-ink transition-colors p-2 rounded-full hover:bg-white/5 backdrop-blur-sm"
-                    aria-label="Toggle Dark Mode"
-                  >
-                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-                  </button>
-                </li>
-              )}
-            </ul>
-          </header>
-
-          {/* Right Panel - Scrollable Content */}
-          <main className="pt-24 lg:w-1/2 lg:py-24">
-            
-            {/* About Section */}
-            <section id="about" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-base/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-ink lg:sr-only">About</h2>
+            <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-[#0d1117] transform transition hover:scale-[1.02] duration-300">
+              {/* Window Header */}
+              <div className="flex items-center px-4 py-3 bg-[#161b22] border-b border-white/5">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                </div>
+                <div className="mx-auto text-xs text-muted font-mono">developer.py</div>
               </div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="text-muted leading-relaxed"
-              >
-                <p className="mb-4">{portfolioData.about}</p>
-              </motion.div>
-            </section>
+              {/* Window Content */}
+              <div className="p-6 font-mono text-sm leading-loose overflow-x-auto">
+                <p><span className="text-purple-400">class</span> <span className="text-accent">Developer</span>:</p>
+                <p className="ml-4"><span className="text-purple-400">def</span> <span className="text-blue-400">__init__</span>(<span className="text-orange-400">self</span>):</p>
+                <p className="ml-8"><span className="text-orange-400">self</span>.name = <span className="text-green-400">"{portfolioData.hero.name}"</span></p>
+                <p className="ml-8"><span className="text-orange-400">self</span>.role = <span className="text-green-400">"Data Scientist & AI Engineer"</span></p>
+                <p className="ml-8"><span className="text-orange-400">self</span>.skills = [</p>
+                <p className="ml-12 text-green-400">"Python", "Machine Learning",</p>
+                <p className="ml-12 text-green-400">"Power BI", "Snowflake"</p>
+                <p className="ml-8">]</p>
+                <p className="ml-8"><span className="text-orange-400">self</span>.status = <span className="text-green-400">"Open to new opportunities"</span></p>
+                <br/>
+                <p className="text-muted italic"># Let's build something amazing together.</p>
+              </div>
+            </div>
+          </motion.div>
+        </section>
 
-            {/* Skills Marquee */}
-            <section className="mb-16 md:mb-24 lg:mb-36 overflow-hidden relative">
-              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-base to-transparent z-10"></div>
-              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-base to-transparent z-10"></div>
-              <div className="flex w-max animate-scroll hover-pause space-x-6 items-center">
-                {[...portfolioData.skills, ...portfolioData.skills].map((skill, idx) => (
-                  <div key={idx} className="flex items-center justify-center px-4 py-2 backdrop-blur-md bg-white/5 border border-white/10 rounded-full text-sm font-medium text-ink shadow-[0_4px_30px_rgba(0,0,0,0.1)] whitespace-nowrap">
-                    {skill}
+        {/* MARQUEE SECTION */}
+        <section className="mb-24 overflow-hidden relative py-8">
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-base to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-base to-transparent z-10"></div>
+          <div className="flex w-max animate-scroll hover-pause space-x-6 items-center">
+            {[...portfolioData.skills, ...portfolioData.skills, ...portfolioData.skills].map((skill, idx) => (
+              <div key={idx} className="flex items-center justify-center px-6 py-3 backdrop-blur-md bg-white/5 border border-white/10 rounded-full text-sm font-semibold text-ink shadow-lg whitespace-nowrap">
+                {skill}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* VERTICAL LAYOUT FOR REMAINING SECTIONS */}
+        <div className="max-w-4xl mx-auto space-y-32">
+          
+          {/* About Section */}
+          <section id="about" className="scroll-mt-32">
+            <h2 className="text-3xl font-bold text-ink mb-8 flex items-center gap-4">
+              <span className="text-accent2">01.</span> About Me
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-muted leading-relaxed text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-lg"
+            >
+              <p>{portfolioData.about}</p>
+            </motion.div>
+          </section>
+
+          {/* Experience Section */}
+          <section id="experience" className="scroll-mt-32">
+            <h2 className="text-3xl font-bold text-ink mb-8 flex items-center gap-4">
+              <span className="text-accent2">02.</span> Experience
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <div className="space-y-6">
+              {portfolioData.experience.map((exp, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-lg hover:border-accent2/30 transition-all duration-300 flex flex-col md:flex-row gap-6"
+                >
+                  <div className="md:w-1/4 text-sm font-semibold text-accent2 font-mono mt-1">
+                    {exp.date}
                   </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Experience Section */}
-            <section id="experience" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-base/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-ink lg:sr-only">Experience</h2>
-              </div>
-              <div>
-                <ol className="group/list">
-                  {portfolioData.experience.map((exp, idx) => (
-                    <motion.li 
-                      key={idx} 
-                      className="mb-12"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    >
-                      <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 p-4 rounded-xl lg:hover:bg-white/5 lg:hover:backdrop-blur-sm lg:hover:border lg:hover:border-white/10 lg:hover:shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-                        <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-muted sm:col-span-2">{exp.date}</header>
-                        <div className="z-10 sm:col-span-6">
-                          <h3 className="font-medium leading-snug text-ink">
-                            <div>
-                              <span className="inline-flex items-center text-lg">{exp.role} · {exp.company}</span>
-                            </div>
-                          </h3>
-                          <p className="mt-2 text-sm leading-normal text-muted">{exp.description}</p>
-                        </div>
-                      </div>
-                    </motion.li>
-                  ))}
-                </ol>
-              </div>
-            </section>
-
-            {/* Projects Section */}
-            <section id="projects" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-base/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-ink lg:sr-only">Projects</h2>
-              </div>
-              <div>
-                <ul className="group/list">
-                  {portfolioData.projects.map((project, idx) => (
-                    <motion.li 
-                      key={idx} 
-                      className="mb-12"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    >
-                      <div className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 p-4 rounded-xl lg:hover:bg-white/5 lg:hover:backdrop-blur-sm lg:hover:border lg:hover:border-accent2/20 lg:hover:shadow-[0_0_20px_rgba(139,92,246,0.15)]">
-                        <div className="z-10 sm:col-span-8">
-                          <h3 className="font-medium leading-snug text-ink flex items-center group-hover:text-accent2 transition">
-                            <a className="inline-flex items-baseline focus-visible:text-accent2" href={project.link} target="_blank" rel="noreferrer">
-                              <span>{project.title}</span>
-                              <ExternalLink size={14} className="ml-2 inline-block shrink-0 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                            </a>
-                          </h3>
-                          <p className="mt-2 text-sm leading-normal text-muted">{project.description}</p>
-                          <ul className="mt-2 flex flex-wrap" aria-label="Technologies used">
-                            {project.tags.map((tag, tIdx) => (
-                              <li key={tIdx} className="mr-1.5 mt-2">
-                                <div className="flex items-center rounded-full bg-accent2/10 px-3 py-1 text-xs font-medium leading-5 text-accent2 border border-accent2/20 backdrop-blur-sm group-hover:bg-accent2/20 transition-colors">
-                                  {tag}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            {/* Contact Section */}
-            <section id="contact" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-base/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-ink lg:sr-only">Contact</h2>
-              </div>
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:border-accent2/30 transition-colors duration-300"
-              >
-                <h3 className="text-2xl font-bold text-ink mb-2 drop-shadow-sm">Get In Touch</h3>
-                <p className="text-muted mb-6 text-sm">Currently open to new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
-                <form className="flex flex-col gap-5">
-                  <div className="flex flex-col md:flex-row gap-5">
-                    <input type="text" placeholder="Name" className="w-full bg-base/50 backdrop-blur-sm border border-white/10 rounded-lg px-4 py-3 text-ink focus:outline-none focus:border-accent2 focus:bg-white/5 transition-all" required />
-                    <input type="email" placeholder="Email" className="w-full bg-base/50 backdrop-blur-sm border border-white/10 rounded-lg px-4 py-3 text-ink focus:outline-none focus:border-accent2 focus:bg-white/5 transition-all" required />
+                  <div className="md:w-3/4">
+                    <h3 className="text-xl font-bold text-ink mb-1">{exp.role}</h3>
+                    <h4 className="text-lg text-muted mb-4">{exp.company}</h4>
+                    <p className="text-muted leading-relaxed">{exp.description}</p>
                   </div>
-                  <textarea placeholder="Message" rows={4} className="w-full bg-base/50 backdrop-blur-sm border border-white/10 rounded-lg px-4 py-3 text-ink focus:outline-none focus:border-accent2 focus:bg-white/5 transition-all resize-none" required></textarea>
-                  <button type="submit" className="self-start mt-2 px-8 py-3 bg-accent2 text-base font-semibold rounded-lg hover:bg-accent hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all duration-300 transform hover:-translate-y-1">Send Message</button>
-                </form>
-              </motion.div>
-            </section>
-          </main>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Projects Section */}
+          <section id="projects" className="scroll-mt-32">
+            <h2 className="text-3xl font-bold text-ink mb-8 flex items-center gap-4">
+              <span className="text-accent2">03.</span> Featured Projects
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {portfolioData.projects.map((project, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-lg hover:border-accent2/30 hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="p-3 bg-accent2/10 text-accent2 rounded-lg">
+                      <ExternalLink size={24} />
+                    </div>
+                    <a href={project.link} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors">
+                      <Github size={24} />
+                    </a>
+                  </div>
+                  <h3 className="text-2xl font-bold text-ink mb-3 group-hover:text-accent2 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted leading-relaxed flex-grow mb-6">
+                    {project.description}
+                  </p>
+                  <ul className="flex flex-wrap gap-2 mt-auto">
+                    {project.tags.map((tag, tIdx) => (
+                      <li key={tIdx} className="text-xs font-mono text-accent2 px-3 py-1 bg-white/5 rounded-full border border-white/5">
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Contact Section */}
+          <section id="contact" className="scroll-mt-32 pb-24">
+            <h2 className="text-3xl font-bold text-ink mb-8 flex items-center gap-4">
+              <span className="text-accent2">04.</span> Get In Touch
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl text-center max-w-2xl mx-auto"
+            >
+              <h3 className="text-4xl font-extrabold text-ink mb-4 drop-shadow-sm">Let's Connect</h3>
+              <p className="text-muted mb-8 text-lg">Currently open to new opportunities. Whether you have a question or just want to say hi, my inbox is always open!</p>
+              
+              <a href={`mailto:rahultwoapl8130@gmail.com`} className="inline-block px-10 py-4 bg-accent2 text-base font-bold rounded-lg hover:bg-accent hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-1">
+                Say Hello &rarr;
+              </a>
+            </motion.div>
+          </section>
 
         </div>
-      </div>
+      </main>
     </div>
   );
 }
