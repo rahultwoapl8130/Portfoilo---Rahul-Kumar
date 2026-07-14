@@ -43,10 +43,11 @@ export default function Home() {
   const navLinks = [
     { name: "Home", id: "home" },
     { name: "About", id: "about" },
+    { name: "Services", id: "services" },
+    { name: "Experience", id: "education" },
     { name: "Skills", id: "skills" },
     { name: "Projects", id: "projects" },
     { name: "Education", id: "education" },
-    { name: "Certifications", id: "certifications" },
     { name: "Contact", id: "contact" }
   ];
 
@@ -57,10 +58,13 @@ export default function Home() {
 
       {/* Floating Centered Navbar with Scroll Spy */}
       <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-2xl">
-        <div className="flex items-center justify-between md:justify-center gap-2 md:gap-8 px-4 md:px-6 py-3 backdrop-blur-md bg-white/5 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center justify-between md:justify-center gap-2 md:gap-8 px-4 md:px-6 py-3 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
           {/* Brand/Name */}
-          <div className="hidden md:flex items-center mr-4 font-bold tracking-tight text-ink whitespace-nowrap">
-            {portfolioData.hero.name.split(" ")[0]}
+          <div className="hidden xl:flex items-center gap-2 mr-4 font-bold tracking-tight text-white whitespace-nowrap">
+            <div className="w-8 h-8 rounded-full bg-accent2/20 border border-accent2/50 flex items-center justify-center text-accent2 text-xs">
+              RK
+            </div>
+            Rahul Kumar
           </div>
           
           <ul className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
