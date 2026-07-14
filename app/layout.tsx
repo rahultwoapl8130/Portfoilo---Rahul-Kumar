@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "../components/ThemeProvider";
+import ChatAssistant from "../components/ChatAssistant";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -60,6 +61,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
+          <ChatAssistant />
         </ThemeProvider>
       </body>
     </html>

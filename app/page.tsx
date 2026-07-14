@@ -227,10 +227,10 @@ export default function Home() {
           {/* Projects Section */}
           <section id="projects" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">03.</span> Featured Projects
+              <span className="text-accent2">03.</span> Case Studies
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
-            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            <div className="space-y-12">
               {portfolioData.projects.map((project, idx) => (
                 <motion.div 
                   key={idx} 
@@ -238,31 +238,57 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:border-accent2/30 hover:-translate-y-1 md:hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group"
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:border-accent2/30 transition-all duration-300 flex flex-col group"
                 >
-                  <div className="flex justify-between items-start mb-4 md:mb-6">
-                    <a href={project.link} target="_blank" rel="noreferrer" className="p-2 md:p-3 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2/20 transition-colors">
-                      <ExternalLink size={20} className="md:w-6 md:h-6" />
-                    </a>
-                    {project.github && project.github !== "#" && (
-                      <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors p-2">
-                        <Github size={20} className="md:w-6 md:h-6" />
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2 group-hover:text-accent2 transition-colors">
+                        {project.title}
+                      </h3>
+                      <ul className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
+                        {project.tags.map((tag, tIdx) => (
+                          <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5">
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <a href={project.link} target="_blank" rel="noreferrer" className="p-2 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2/20 transition-colors">
+                        <ExternalLink size={20} />
                       </a>
-                    )}
+                      {project.github && project.github !== "#" && (
+                        <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors p-2 bg-white/5 rounded-lg border border-white/10">
+                          <Github size={20} />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-ink mb-2 md:mb-3 group-hover:text-accent2 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted text-sm md:text-base leading-relaxed flex-grow mb-4 md:mb-6">
+
+                  <p className="text-muted text-base leading-relaxed mb-8">
                     {project.description}
                   </p>
-                  <ul className="flex flex-wrap gap-1.5 md:gap-2 mt-auto">
-                    {project.tags.map((tag, tIdx) => (
-                      <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5">
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
+
+                  <div className="grid md:grid-cols-3 gap-6 bg-base/50 p-6 rounded-xl border border-white/5">
+                    {project.businessProblem && (
+                      <div>
+                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Business Problem</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.businessProblem}</p>
+                      </div>
+                    )}
+                    {project.architecture && (
+                      <div>
+                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Architecture</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.architecture}</p>
+                      </div>
+                    )}
+                    {project.businessImpact && (
+                      <div>
+                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Business Impact</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.businessImpact}</p>
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </div>
