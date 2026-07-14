@@ -242,12 +242,14 @@ export default function Home() {
                   className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-lg hover:border-accent2/30 hover:-translate-y-2 transition-all duration-300 flex flex-col h-full group"
                 >
                   <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-accent2/10 text-accent2 rounded-lg">
+                    <a href={project.link} target="_blank" rel="noreferrer" className="p-3 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2/20 transition-colors">
                       <ExternalLink size={24} />
-                    </div>
-                    <a href={project.link} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors">
-                      <Github size={24} />
                     </a>
+                    {project.github && project.github !== "#" && (
+                      <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors">
+                        <Github size={24} />
+                      </a>
+                    )}
                   </div>
                   <h3 className="text-2xl font-bold text-ink mb-3 group-hover:text-accent2 transition-colors">
                     {project.title}
