@@ -33,6 +33,14 @@ export const portfolioData = {
       description: "Developed a strong foundation in scientific methodology, quantitative analysis, and research, applying data-driven approaches to agricultural problem-solving."
     }
   ],
+
+  certifications: [
+    { title: "Microsoft Generative AI", issuer: "Microsoft" },
+    { title: "Power BI Data Analyst", issuer: "Microsoft" },
+    { title: "Machine Learning Specialization", issuer: "Coursera / Stanford" },
+    { title: "Google Cloud Fundamentals", issuer: "Google" },
+    { title: "Snowflake SnowPro Core", issuer: "Snowflake" },
+  ],
   
   projects: [
     {
@@ -62,6 +70,20 @@ export const portfolioData = {
       link: "#",
       github: "#",
       tags: ["Machine Learning", "Python", "EDA", "Classification"]
+    },
+    {
+      title: "Customer Churn Prediction",
+      description: "A robust machine learning classification model designed to identify high-risk customers, enabling proactive retention strategies through business analytics.",
+      link: "#",
+      github: "#",
+      tags: ["Machine Learning", "Classification", "Business Analytics", "Python"]
+    },
+    {
+      title: "Sales Forecast Dashboard",
+      description: "A dynamic Power BI dashboard featuring advanced forecasting models to predict future sales trends and enable interactive business planning.",
+      link: "#",
+      github: "#",
+      tags: ["Power BI", "Forecasting", "Interactive Dashboard", "Data Analytics"]
     }
   ]
 };
