@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Github, Linkedin, ExternalLink, Moon, Sun, Download, Award, BookOpen, Star, GitCommit } from "lucide-react";
 import { portfolioData } from "./data";
 import ParticlesBackground from "../components/ParticlesBackground";
+import LoadingScreen from "../components/LoadingScreen";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
@@ -11,15 +12,48 @@ import Typewriter from "typewriter-effect";
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState("home");
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+
+    const handleScroll = () => {
+      const sections = ["home", "about", "skills", "projects", "education", "certifications", "github", "contact"];
+      const scrollPosition = window.scrollY + 200; // offset
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && 
+            element.offsetTop <= scrollPosition && 
+            (element.offsetTop + element.offsetHeight) > scrollPosition) {
+          setActiveSection(section);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen onComplete={() => setLoading(false)} />;
+  }
+
+  const navLinks = [
+    { name: "Home", id: "home" },
+    { name: "About", id: "about" },
+    { name: "Skills", id: "skills" },
+    { name: "Projects", id: "projects" },
+    { name: "Contact", id: "contact" }
+  ];
 
   return (
     <div className="bg-base min-h-screen text-ink font-body selection:bg-accent2 selection:text-base relative transition-colors duration-300 overflow-x-hidden">
       
       <ParticlesBackground />
 
-      {/* Floating Centered Navbar - Mobile Optimized */}
+      {/* Floating Centered Navbar with Scroll Spy */}
       <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-2xl">
         <div className="flex items-center justify-between md:justify-center gap-2 md:gap-8 px-4 md:px-6 py-3 backdrop-blur-md bg-white/5 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
           {/* Brand/Name */}
@@ -27,11 +61,24 @@ export default function Home() {
             {portfolioData.hero.name.split(" ")[0]}
           </div>
           
-          <ul className="flex items-center justify-center gap-3 md:gap-6 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar">
-            <li><a href="#home" className="hover:text-ink transition-colors">Home</a></li>
-            <li><a href="#about" className="hover:text-ink transition-colors">About</a></li>
-            <li><a href="#projects" className="hover:text-ink transition-colors">Projects</a></li>
-            <li><a href="#contact" className="hover:text-ink transition-colors">Contact</a></li>
+          <ul className="flex items-center justify-center gap-3 md:gap-6 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
+            {navLinks.map((link) => (
+              <li key={link.id} className="relative">
+                <a 
+                  href={`#${link.id}`} 
+                  className={`transition-colors py-1 ${activeSection === link.id ? 'text-accent2' : 'hover:text-ink'}`}
+                >
+                  {link.name}
+                  {activeSection === link.id && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent2 rounded-full"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </a>
+              </li>
+            ))}
           </ul>
 
           {mounted && (
@@ -49,9 +96,8 @@ export default function Home() {
       <main className="relative z-10 pt-28 md:pt-32 pb-24 max-w-screen-xl mx-auto px-4 md:px-12">
         
         {/* HERO SECTION */}
-        <section id="home" className="min-h-[85vh] flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 pt-8 pb-16 md:pb-24">
+        <section id="home" className="min-h-[85vh] flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 pt-8 pb-16 md:pb-24 scroll-mt-32">
           
-          {/* Left Column (Text & Buttons) */}
           <div className="w-full lg:w-1/2 flex flex-col items-start text-left mt-8 md:mt-0">
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -116,8 +162,8 @@ export default function Home() {
               <a href="#contact" className="w-full sm:w-auto text-center px-8 py-3.5 bg-gradient-to-r from-accent2 to-purple-500 text-white font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-1">
                 Let's Talk &rarr;
               </a>
-              <a href="/Rahul_Kumar_Resume.pdf" target="_blank" className="w-full sm:w-auto justify-center px-8 py-3.5 bg-transparent border border-white/20 text-ink font-semibold rounded-lg hover:bg-white/5 transition-all duration-300 flex items-center gap-2">
-                <Download size={18} /> Resume
+              <a href="/Rahul_Kumar_Resume.pdf" target="_blank" className="w-full sm:w-auto justify-center px-8 py-3.5 bg-transparent border border-white/20 text-ink font-semibold rounded-lg hover:bg-white/5 transition-all duration-300 flex items-center gap-2 group">
+                <Download size={18} className="group-hover:-translate-y-1 transition-transform" /> Resume
               </a>
             </motion.div>
             
@@ -127,23 +173,21 @@ export default function Home() {
               transition={{ delay: 0.6 }}
               className="mt-10 md:mt-12 flex gap-4"
             >
-              <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition">
+              <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition hover:scale-110">
                 <Github size={20} />
               </a>
-              <a href={portfolioData.hero.socials.linkedin} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition">
+              <a href={portfolioData.hero.socials.linkedin} target="_blank" rel="noreferrer" className="p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-ink hover:border-accent2 transition hover:scale-110">
                 <Linkedin size={20} />
               </a>
             </motion.div>
           </div>
 
-          {/* Right Column (IDE Mockup) - Hidden on very small screens, visible on md and up */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             className="w-full lg:w-1/2 relative mt-12 lg:mt-0 hidden sm:block"
           >
-            {/* Floating Tech Badges */}
             <div className="absolute -top-4 -left-4 md:-top-6 md:-left-6 z-20 px-3 md:px-4 py-1.5 md:py-2 backdrop-blur-md bg-base/80 border border-white/10 rounded-full text-xs md:text-sm font-semibold text-accent2 shadow-lg animate-bounce" style={{animationDuration: '3s'}}>
               🐍 Python
             </div>
@@ -177,19 +221,6 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* MARQUEE SECTION */}
-        <section className="mb-16 md:mb-24 overflow-hidden relative py-4 md:py-8 -mx-4 md:mx-0">
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-base to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-base to-transparent z-10"></div>
-          <div className="flex w-max animate-scroll hover-pause space-x-4 md:space-x-6 items-center">
-            {[...portfolioData.skills, ...portfolioData.skills, ...portfolioData.skills].map((skill, idx) => (
-              <div key={idx} className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 backdrop-blur-md bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-semibold text-ink shadow-lg whitespace-nowrap">
-                {skill}
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* VERTICAL LAYOUT FOR REMAINING SECTIONS */}
         <div className="max-w-4xl mx-auto space-y-24 md:space-y-32">
           
@@ -202,29 +233,141 @@ export default function Home() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5 }}
-              className="text-muted leading-relaxed text-base md:text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg"
+              className="text-muted leading-relaxed text-base md:text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-shadow"
             >
               <p>{portfolioData.about}</p>
             </motion.div>
           </section>
 
+          {/* Skills Dashboard Section */}
+          <section id="skills" className="scroll-mt-24 md:scroll-mt-32">
+            <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
+              <span className="text-accent2">02.</span> Core Competencies
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+              {Object.entries(
+                portfolioData.skills.reduce((acc, skill: any) => {
+                  if (!acc[skill.category]) acc[skill.category] = [];
+                  acc[skill.category].push(skill);
+                  return acc;
+                }, {} as Record<string, any[]>)
+              ).map(([category, skills], idx) => (
+                <div key={idx} className="space-y-4">
+                  <h3 className="text-sm font-bold text-ink uppercase tracking-wider mb-4 border-b border-white/10 pb-2">{category}</h3>
+                  <div className="space-y-4">
+                    {skills.map((skill, sIdx) => (
+                      <div key={sIdx}>
+                        <div className="flex justify-between text-xs font-mono text-muted mb-1.5">
+                          <span>{skill.name}</span>
+                          <span>{skill.percentage}%</span>
+                        </div>
+                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.percentage}%` }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 1, delay: sIdx * 0.1, ease: "easeOut" }}
+                            className="h-full bg-gradient-to-r from-accent to-accent2 rounded-full relative"
+                          >
+                            <div className="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite] -translate-x-full" style={{backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)'}}></div>
+                          </motion.div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Projects Section */}
+          <section id="projects" className="scroll-mt-24 md:scroll-mt-32">
+            <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
+              <span className="text-accent2">03.</span> Case Studies
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <div className="space-y-12">
+              {portfolioData.projects.map((project, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-accent2/40 hover:-translate-y-2 transition-all duration-300 flex flex-col group"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2 group-hover:text-accent2 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <ul className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
+                        {project.tags.map((tag, tIdx) => (
+                          <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors">
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <a href={project.link} target="_blank" rel="noreferrer" className="p-2 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2 hover:text-white transition-colors duration-300">
+                        <ExternalLink size={20} />
+                      </a>
+                      {project.github && project.github !== "#" && (
+                        <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-ink transition-colors p-2 bg-white/5 rounded-lg border border-white/10 hover:border-white/30">
+                          <Github size={20} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-muted text-base leading-relaxed mb-8">
+                    {project.description}
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-6 bg-base/50 p-6 rounded-xl border border-white/5 group-hover:bg-white/5 transition-colors duration-300">
+                    {project.businessProblem && (
+                      <div>
+                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Problem</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.businessProblem}</p>
+                      </div>
+                    )}
+                    {project.architecture && (
+                      <div>
+                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Architecture</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.architecture}</p>
+                      </div>
+                    )}
+                    {project.businessImpact && (
+                      <div>
+                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Impact</h4>
+                        <p className="text-sm text-muted leading-relaxed">{project.businessImpact}</p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
           {/* Education & Experience Section */}
           <section id="education" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">02.</span> Education
+              <span className="text-accent2">04.</span> Education
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <div className="space-y-4 md:space-y-6">
               {portfolioData.experience.map((exp, idx) => (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:border-accent2/30 transition-all duration-300 flex flex-col md:flex-row gap-2 md:gap-6"
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] hover:border-accent2/30 transition-all duration-300 flex flex-col md:flex-row gap-2 md:gap-6"
                 >
                   <div className="md:w-1/4 text-xs md:text-sm font-semibold text-accent2 font-mono md:mt-1 mb-2 md:mb-0">
                     {exp.date}
@@ -241,80 +384,10 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Projects Section */}
-          <section id="projects" className="scroll-mt-24 md:scroll-mt-32">
-            <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">03.</span> Case Studies
-              <div className="h-px bg-white/10 flex-grow"></div>
-            </h2>
-            <div className="space-y-12">
-              {portfolioData.projects.map((project, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:border-accent2/30 transition-all duration-300 flex flex-col group"
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2 group-hover:text-accent2 transition-colors">
-                        {project.title}
-                      </h3>
-                      <ul className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
-                        {project.tags.map((tag, tIdx) => (
-                          <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5">
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex gap-2">
-                      <a href={project.link} target="_blank" rel="noreferrer" className="p-2 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2/20 transition-colors">
-                        <ExternalLink size={20} />
-                      </a>
-                      {project.github && project.github !== "#" && (
-                        <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-accent2 transition-colors p-2 bg-white/5 rounded-lg border border-white/10">
-                          <Github size={20} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className="text-muted text-base leading-relaxed mb-8">
-                    {project.description}
-                  </p>
-
-                  <div className="grid md:grid-cols-3 gap-6 bg-base/50 p-6 rounded-xl border border-white/5">
-                    {project.businessProblem && (
-                      <div>
-                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Business Problem</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.businessProblem}</p>
-                      </div>
-                    )}
-                    {project.architecture && (
-                      <div>
-                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Architecture</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.architecture}</p>
-                      </div>
-                    )}
-                    {project.businessImpact && (
-                      <div>
-                        <h4 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Business Impact</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.businessImpact}</p>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
           {/* Certifications Section */}
           <section id="certifications" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">04.</span> Certifications
+              <span className="text-accent2">05.</span> Certifications
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -323,11 +396,11 @@ export default function Home() {
                   key={idx}
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="flex items-center gap-4 backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-md hover:border-accent2/30 transition-all group"
+                  className="flex items-center gap-4 backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)] hover:border-accent2/30 hover:-translate-y-1 transition-all duration-300 group"
                 >
-                  <div className="p-3 bg-accent2/10 rounded-full text-accent2 group-hover:scale-110 transition-transform">
+                  <div className="p-3 bg-accent2/10 rounded-full text-accent2 group-hover:scale-110 group-hover:bg-accent2 group-hover:text-white transition-all duration-300">
                     <Award size={24} />
                   </div>
                   <div>
@@ -342,27 +415,28 @@ export default function Home() {
           {/* GitHub Stats Section */}
           <section id="github" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">05.</span> Open Source
+              <span className="text-accent2">06.</span> Open Source
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5 }}
-              className="backdrop-blur-md bg-[#0d1117] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden"
+              className="backdrop-blur-md bg-[#0d1117] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative group hover:border-white/20 transition-colors"
             >
-              <div className="text-center md:text-left flex-1">
+              <div className="absolute inset-0 bg-gradient-to-r from-accent2/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="text-center md:text-left flex-1 relative z-10">
                 <h3 className="text-xl md:text-2xl font-bold text-ink mb-2 flex items-center justify-center md:justify-start gap-2">
                   <Github className="text-accent2" /> GitHub Stats
                 </h3>
                 <p className="text-muted text-sm md:text-base">Passionate about writing clean code and contributing to open-source projects.</p>
               </div>
-              <div className="flex gap-4 flex-wrap justify-center flex-1">
-                <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-accent2 transition-colors">
+              <div className="flex gap-4 flex-wrap justify-center flex-1 relative z-10">
+                <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-accent2 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
                   <GitCommit size={16} className="text-green-400" /> Commits
                 </a>
-                <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-accent2 transition-colors">
+                <a href={portfolioData.hero.socials.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-accent2 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
                   <Star size={16} className="text-yellow-400" /> Stars
                 </a>
               </div>
@@ -372,15 +446,15 @@ export default function Home() {
           {/* Contact Section */}
           <section id="contact" className="scroll-mt-24 md:scroll-mt-32 pb-16 md:pb-24">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">06.</span> Get In Touch
+              <span className="text-accent2">07.</span> Get In Touch
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl text-center max-w-2xl mx-auto"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl text-center max-w-2xl mx-auto hover:shadow-[0_0_40px_rgba(139,92,246,0.15)] hover:border-accent2/30 transition-all duration-500"
             >
               <h3 className="text-3xl md:text-4xl font-extrabold text-ink mb-4 drop-shadow-sm">Let's Connect</h3>
               <p className="text-muted mb-6 md:mb-8 text-base md:text-lg">Currently open to new opportunities. Whether you have a question or just want to say hi, my inbox is always open!</p>
@@ -393,6 +467,17 @@ export default function Home() {
 
         </div>
       </main>
+
+      {/* Back to Top Button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: activeSection !== 'home' ? 1 : 0 }}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-6 left-6 z-40 p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-accent2 hover:border-accent2 transition-all duration-300 shadow-lg backdrop-blur-md"
+        aria-label="Back to top"
+      >
+        <div className="transform -rotate-90 text-xl font-bold leading-none">&gt;</div>
+      </motion.button>
     </div>
   );
 }

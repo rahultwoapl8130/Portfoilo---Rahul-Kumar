@@ -12,6 +12,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-base text-ink font-body antialiased;
 }

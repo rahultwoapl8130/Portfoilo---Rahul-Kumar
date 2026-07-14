@@ -12,11 +12,19 @@ export const portfolioData = {
   about: "I am an aspiring Data Scientist, Machine Learning Engineer, and Business Analytics professional passionate about building AI-driven solutions that solve real-world business problems. My work spans machine learning, customer analytics, business intelligence, recommendation systems, and interactive web applications. I enjoy transforming raw data into actionable insights and creating end-to-end projects—from data preprocessing and model development to deployment and intuitive user interfaces. I am deeply interested in Cloud Computing, Product Thinking, and Team Collaboration, and I am committed to continuous learning.",
   
   skills: [
-    "Python", "SQL", "JavaScript", "C++", 
-    "Machine Learning", "Scikit-learn", "TensorFlow", "PyTorch", "Pandas", "NumPy",
-    "Power BI", "Excel", "Data Visualization", "Matplotlib", "Seaborn", "Looker Studio",
-    "Google Cloud", "Vertex AI", "BigQuery", "Snowflake", "Databricks",
-    "Git", "GitHub", "Docker", "HTML", "CSS"
+    { name: "Python", percentage: 90, category: "Programming" },
+    { name: "SQL", percentage: 85, category: "Programming" },
+    { name: "JavaScript", percentage: 75, category: "Programming" },
+    { name: "C++", percentage: 65, category: "Programming" },
+    { name: "Machine Learning", percentage: 88, category: "AI & ML" },
+    { name: "Scikit-learn", percentage: 85, category: "AI & ML" },
+    { name: "TensorFlow", percentage: 75, category: "AI & ML" },
+    { name: "PyTorch", percentage: 70, category: "AI & ML" },
+    { name: "Pandas", percentage: 90, category: "Data Science" },
+    { name: "NumPy", percentage: 88, category: "Data Science" },
+    { name: "Power BI", percentage: 85, category: "Data Science" },
+    { name: "Google Cloud", percentage: 80, category: "Cloud & DB" },
+    { name: "Snowflake", percentage: 75, category: "Cloud & DB" },
   ],
   
   experience: [
