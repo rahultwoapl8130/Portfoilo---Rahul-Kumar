@@ -45,6 +45,8 @@ export default function Home() {
     { name: "About", id: "about" },
     { name: "Skills", id: "skills" },
     { name: "Projects", id: "projects" },
+    { name: "Education", id: "education" },
+    { name: "Certifications", id: "certifications" },
     { name: "Contact", id: "contact" }
   ];
 
@@ -61,18 +63,18 @@ export default function Home() {
             {portfolioData.hero.name.split(" ")[0]}
           </div>
           
-          <ul className="flex items-center justify-center gap-3 md:gap-6 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
+          <ul className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
             {navLinks.map((link) => (
-              <li key={link.id} className="relative">
+              <li key={link.id} className="relative z-10">
                 <a 
                   href={`#${link.id}`} 
-                  className={`transition-colors py-1 ${activeSection === link.id ? 'text-accent2' : 'hover:text-ink'}`}
+                  className={`transition-colors px-3 py-1.5 md:px-4 md:py-2 block rounded-full ${activeSection === link.id ? 'text-white' : 'hover:text-ink'}`}
                 >
                   {link.name}
                   {activeSection === link.id && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent2 rounded-full"
+                      className="absolute inset-0 bg-white/10 rounded-full -z-10"
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
