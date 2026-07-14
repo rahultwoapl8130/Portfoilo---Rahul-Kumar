@@ -89,7 +89,8 @@ export const portfolioData = {
       challenges: "Determining the optimal number of clusters for diverse user behavioral data.",
       link: "https://rahultwoapl8130.github.io/Smartcart_Customers/",
       github: "https://github.com/rahultwoapl8130/Smartcart_Customers",
-      tags: ["Python", "Scikit-learn", "PCA", "K-Means", "Pandas", "NumPy", "HTML"]
+      tags: ["Python", "Scikit-learn", "PCA", "K-Means", "Pandas", "NumPy", "HTML"],
+      image: "https://images.unsplash.com/photo-1556742049-0cf34b6e5804?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Adventure Works Dashboard",
@@ -100,7 +101,8 @@ export const portfolioData = {
       challenges: "Creating complex DAX measures for year-over-year growth and dynamic regional filtering.",
       link: "#",
       github: "#",
-      tags: ["Power BI", "Power Query", "DAX", "Business KPIs", "Data Visualization"]
+      tags: ["Power BI", "Power Query", "DAX", "Business KPIs", "Data Visualization"],
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
     }
   ]
 };

@@ -47,7 +47,7 @@ export default function Home() {
     { name: "Experience", id: "education" },
     { name: "Skills", id: "skills" },
     { name: "Projects", id: "projects" },
-    { name: "Education", id: "education" },
+    { name: "Certifications", id: "certifications" },
     { name: "Contact", id: "contact" }
   ];
 
@@ -115,6 +115,20 @@ export default function Home() {
         <section id="home" className="min-h-[85vh] flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 pt-8 pb-16 md:pb-24 scroll-mt-32">
           
           <div className="w-full lg:w-1/2 flex flex-col items-start text-left mt-8 md:mt-0">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 md:mb-8 relative"
+            >
+              <div className="absolute inset-0 bg-accent2/20 blur-2xl rounded-full"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=256&auto=format&fit=crop" 
+                alt="Profile" 
+                className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-2 border-white/10 shadow-[0_0_30px_rgba(139,92,246,0.3)] relative z-10"
+              />
+            </motion.div>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -246,15 +260,30 @@ export default function Home() {
               <span className="text-accent2">01.</span> About Me
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5 }}
-              className="text-muted leading-relaxed text-base md:text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-shadow"
-            >
-              <p>{portfolioData.about}</p>
-            </motion.div>
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+              <motion.div 
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5 }}
+                className="text-muted leading-relaxed text-base md:text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-shadow lg:w-2/3"
+              >
+                <p>{portfolioData.about}</p>
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="lg:w-1/3 w-full"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=600&auto=format&fit=crop" 
+                  alt="Workspace" 
+                  className="rounded-2xl border border-white/10 shadow-lg w-full object-cover h-64 lg:h-full"
+                />
+              </motion.div>
+            </div>
           </section>
 
           {/* Services Section */}
@@ -342,11 +371,13 @@ export default function Home() {
                   className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-accent2/40 hover:-translate-y-2 transition-all duration-300 flex flex-col group"
                 >
                   {/* Image Placeholder */}
-                  <div className="w-full h-48 md:h-64 bg-gradient-to-br from-white/5 to-white/10 relative flex items-center justify-center border-b border-white/5">
-                    <div className="absolute inset-0 bg-accent2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div className="text-muted/50 font-mono text-sm tracking-widest flex items-center gap-2">
-                      <ExternalLink size={16} /> PROJECT PREVIEW
-                    </div>
+                  <div className="w-full h-48 md:h-64 bg-base relative flex items-center justify-center border-b border-white/5 overflow-hidden">
+                    <img 
+                      src={project.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop"} 
+                      alt={project.title} 
+                      className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-transparent"></div>
                   </div>
 
                   <div className="p-6 md:p-8">
