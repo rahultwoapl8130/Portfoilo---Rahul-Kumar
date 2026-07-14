@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, ExternalLink, Moon, Sun, Download, Award, BookOpen, Star, GitCommit } from "lucide-react";
+import { Github, Linkedin, ExternalLink, Moon, Sun, Download, Award, BookOpen, Star, GitCommit, BrainCircuit, LineChart, PieChart, Send } from "lucide-react";
 import { portfolioData } from "./data";
 import ParticlesBackground from "../components/ParticlesBackground";
 import LoadingScreen from "../components/LoadingScreen";
@@ -19,8 +19,8 @@ export default function Home() {
     setMounted(true);
 
     const handleScroll = () => {
-      const sections = ["home", "about", "skills", "projects", "education", "certifications", "github", "contact"];
-      const scrollPosition = window.scrollY + 200; // offset
+      const sections = ["home", "about", "services", "skills", "projects", "education", "certifications", "contact"];
+      const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -51,13 +51,23 @@ export default function Home() {
     { name: "Contact", id: "contact" }
   ];
 
+  // Helper to get Lucide icons dynamically
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case "BrainCircuit": return <BrainCircuit size={32} />;
+      case "LineChart": return <LineChart size={32} />;
+      case "PieChart": return <PieChart size={32} />;
+      default: return <Star size={32} />;
+    }
+  };
+
   return (
     <div className="bg-base min-h-screen text-ink font-body selection:bg-accent2 selection:text-base relative transition-colors duration-300 overflow-x-hidden">
       
       <ParticlesBackground />
 
       {/* Floating Centered Navbar with Scroll Spy */}
-      <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-2xl">
+      <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-4xl">
         <div className="flex items-center justify-between md:justify-center gap-2 md:gap-8 px-4 md:px-6 py-3 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
           {/* Brand/Name */}
           <div className="hidden xl:flex items-center gap-2 mr-4 font-bold tracking-tight text-white whitespace-nowrap">
@@ -68,8 +78,8 @@ export default function Home() {
           </div>
           
           <ul className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
-            {navLinks.map((link) => (
-              <li key={link.id} className="relative z-10">
+            {navLinks.map((link, idx) => (
+              <li key={`${link.id}-${idx}`} className="relative z-10">
                 <a 
                   href={`#${link.id}`} 
                   className={`transition-colors px-3 py-1.5 md:px-4 md:py-2 block rounded-full ${activeSection === link.id ? 'text-white' : 'hover:text-ink'}`}
@@ -90,7 +100,7 @@ export default function Home() {
           {mounted && (
             <button 
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="ml-2 flex-shrink-0 text-muted hover:text-ink transition-colors p-1.5 rounded-full hover:bg-white/5"
+              className="ml-2 flex-shrink-0 text-muted hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
               aria-label="Toggle Dark Mode"
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -247,10 +257,36 @@ export default function Home() {
             </motion.div>
           </section>
 
+          {/* Services Section */}
+          <section id="services" className="scroll-mt-24 md:scroll-mt-32">
+            <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
+              <span className="text-accent2">02.</span> What I Offer
+              <div className="h-px bg-white/10 flex-grow"></div>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {portfolioData.services?.map((service, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:border-accent2/30 hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center"
+                >
+                  <div className="w-16 h-16 rounded-full bg-accent2/10 flex items-center justify-center text-accent2 mb-6 group-hover:scale-110 group-hover:bg-accent2 group-hover:text-white transition-all duration-300">
+                    {getIcon(service.icon)}
+                  </div>
+                  <h3 className="text-lg md:text-xl font-bold text-ink mb-3 group-hover:text-accent2 transition-colors">{service.title}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{service.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
           {/* Skills Dashboard Section */}
           <section id="skills" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">02.</span> Core Competencies
+              <span className="text-accent2">03.</span> Core Competencies
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <div className="grid md:grid-cols-2 gap-8 md:gap-12">
@@ -292,7 +328,7 @@ export default function Home() {
           {/* Projects Section */}
           <section id="projects" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">03.</span> Case Studies
+              <span className="text-accent2">04.</span> Case Studies
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <div className="space-y-12">
@@ -303,56 +339,66 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-accent2/40 hover:-translate-y-2 transition-all duration-300 flex flex-col group"
+                  className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-accent2/40 hover:-translate-y-2 transition-all duration-300 flex flex-col group"
                 >
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2 group-hover:text-accent2 transition-colors duration-300">
-                        {project.title}
-                      </h3>
-                      <ul className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
-                        {project.tags.map((tag, tIdx) => (
-                          <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors">
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex gap-2">
-                      <a href={project.link} target="_blank" rel="noreferrer" className="p-2 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2 hover:text-white transition-colors duration-300">
-                        <ExternalLink size={20} />
-                      </a>
-                      {project.github && project.github !== "#" && (
-                        <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-ink transition-colors p-2 bg-white/5 rounded-lg border border-white/10 hover:border-white/30">
-                          <Github size={20} />
-                        </a>
-                      )}
+                  {/* Image Placeholder */}
+                  <div className="w-full h-48 md:h-64 bg-gradient-to-br from-white/5 to-white/10 relative flex items-center justify-center border-b border-white/5">
+                    <div className="absolute inset-0 bg-accent2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="text-muted/50 font-mono text-sm tracking-widest flex items-center gap-2">
+                      <ExternalLink size={16} /> PROJECT PREVIEW
                     </div>
                   </div>
 
-                  <p className="text-muted text-base leading-relaxed mb-8">
-                    {project.description}
-                  </p>
+                  <div className="p-6 md:p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div>
+                        <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2 group-hover:text-accent2 transition-colors duration-300">
+                          {project.title}
+                        </h3>
+                        <ul className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
+                          {project.tags.map((tag, tIdx) => (
+                            <li key={tIdx} className="text-[10px] md:text-xs font-mono text-accent2 px-2 md:px-3 py-1 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors">
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex gap-2">
+                        <a href={project.link} target="_blank" rel="noreferrer" className="p-2 bg-accent2/10 text-accent2 rounded-lg hover:bg-accent2 hover:text-white transition-colors duration-300">
+                          <ExternalLink size={20} />
+                        </a>
+                        {project.github && project.github !== "#" && (
+                          <a href={project.github} target="_blank" rel="noreferrer" className="text-muted hover:text-ink transition-colors p-2 bg-white/5 rounded-lg border border-white/10 hover:border-white/30">
+                            <Github size={20} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
 
-                  <div className="grid md:grid-cols-3 gap-6 bg-base/50 p-6 rounded-xl border border-white/5 group-hover:bg-white/5 transition-colors duration-300">
-                    {project.businessProblem && (
-                      <div>
-                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Problem</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.businessProblem}</p>
-                      </div>
-                    )}
-                    {project.architecture && (
-                      <div>
-                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Architecture</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.architecture}</p>
-                      </div>
-                    )}
-                    {project.businessImpact && (
-                      <div>
-                        <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Impact</h4>
-                        <p className="text-sm text-muted leading-relaxed">{project.businessImpact}</p>
-                      </div>
-                    )}
+                    <p className="text-muted text-base leading-relaxed mb-8">
+                      {project.description}
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-6 bg-base/50 p-6 rounded-xl border border-white/5 group-hover:bg-white/5 transition-colors duration-300">
+                      {project.businessProblem && (
+                        <div>
+                          <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Problem</h4>
+                          <p className="text-sm text-muted leading-relaxed">{project.businessProblem}</p>
+                        </div>
+                      )}
+                      {project.architecture && (
+                        <div>
+                          <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Architecture</h4>
+                          <p className="text-sm text-muted leading-relaxed">{project.architecture}</p>
+                        </div>
+                      )}
+                      {project.businessImpact && (
+                        <div>
+                          <h4 className="text-xs font-bold text-ink uppercase tracking-wider mb-2 border-b border-white/5 pb-1">Business Impact</h4>
+                          <p className="text-sm text-muted leading-relaxed">{project.businessImpact}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -362,7 +408,7 @@ export default function Home() {
           {/* Education & Experience Section */}
           <section id="education" className="scroll-mt-24 md:scroll-mt-32">
             <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">04.</span> Education
+              <span className="text-accent2">05.</span> Experience & Education
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
             <div className="space-y-4 md:space-y-6">
@@ -384,34 +430,6 @@ export default function Home() {
                     </h3>
                     <h4 className="text-base md:text-lg text-muted mb-3">{exp.company}</h4>
                     <p className="text-muted text-sm md:text-base leading-relaxed">{exp.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
-          {/* Certifications Section */}
-          <section id="certifications" className="scroll-mt-24 md:scroll-mt-32">
-            <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
-              <span className="text-accent2">05.</span> Certifications
-              <div className="h-px bg-white/10 flex-grow"></div>
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {portfolioData.certifications.map((cert, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="flex items-center gap-4 backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)] hover:border-accent2/30 hover:-translate-y-1 transition-all duration-300 group"
-                >
-                  <div className="p-3 bg-accent2/10 rounded-full text-accent2 group-hover:scale-110 group-hover:bg-accent2 group-hover:text-white transition-all duration-300">
-                    <Award size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm md:text-base font-bold text-ink line-clamp-1">{cert.title}</h3>
-                    <p className="text-xs md:text-sm text-muted">{cert.issuer}</p>
                   </div>
                 </motion.div>
               ))}
@@ -455,20 +473,60 @@ export default function Home() {
               <span className="text-accent2">07.</span> Get In Touch
               <div className="h-px bg-white/10 flex-grow"></div>
             </h2>
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl text-center max-w-2xl mx-auto hover:shadow-[0_0_40px_rgba(139,92,246,0.15)] hover:border-accent2/30 transition-all duration-500"
-            >
-              <h3 className="text-3xl md:text-4xl font-extrabold text-ink mb-4 drop-shadow-sm">Let's Connect</h3>
-              <p className="text-muted mb-6 md:mb-8 text-base md:text-lg">Currently open to new opportunities. Whether you have a question or just want to say hi, my inbox is always open!</p>
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              <motion.div 
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+              >
+                <h3 className="text-3xl font-extrabold text-ink mb-4">Let's build something <br/><span className="text-accent2">extraordinary.</span></h3>
+                <p className="text-muted text-base leading-relaxed mb-8">
+                  Whether you're looking for a Data Scientist, Machine Learning Engineer, or just want to say hi, my inbox is always open. I'll try my best to get back to you!
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-muted hover:text-ink transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10"><Send size={16} className="text-accent2" /></div>
+                    <a href="mailto:rahultwoapl8130@gmail.com">rahultwoapl8130@gmail.com</a>
+                  </div>
+                  <div className="flex items-center gap-4 text-muted hover:text-ink transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10"><Linkedin size={16} className="text-accent2" /></div>
+                    <a href={portfolioData.hero.socials.linkedin} target="_blank" rel="noreferrer">LinkedIn Profile</a>
+                  </div>
+                </div>
+              </motion.div>
               
-              <a href={`mailto:rahultwoapl8130@gmail.com`} className="inline-block w-full sm:w-auto px-8 md:px-10 py-3.5 md:py-4 bg-accent2 text-white text-sm md:text-base font-bold rounded-lg hover:bg-accent hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-1">
-                Say Hello &rarr;
-              </a>
-            </motion.div>
+              <motion.form 
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+                className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col gap-4"
+                onSubmit={(e) => { e.preventDefault(); alert("Form submission handled by your backend later!"); }}
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold tracking-wider text-muted uppercase">Name</label>
+                    <input type="text" required placeholder="John Doe" className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent2 transition-colors text-ink" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold tracking-wider text-muted uppercase">Email</label>
+                    <input type="email" required placeholder="john@example.com" className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent2 transition-colors text-ink" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold tracking-wider text-muted uppercase">Subject</label>
+                  <input type="text" required placeholder="Job Opportunity" className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent2 transition-colors text-ink" />
+                </div>
+                <div className="flex flex-col gap-1.5 mb-2">
+                  <label className="text-xs font-semibold tracking-wider text-muted uppercase">Message</label>
+                  <textarea required rows={4} placeholder="Hi Rahul, I'd like to talk about..." className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent2 transition-colors text-ink resize-none"></textarea>
+                </div>
+                <button type="submit" className="w-full py-3 bg-gradient-to-r from-accent to-accent2 text-white font-bold rounded-lg hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+                  <Send size={18} /> Send Message
+                </button>
+              </motion.form>
+            </div>
           </section>
 
         </div>

@@ -42,6 +42,24 @@ export const portfolioData = {
     }
   ],
 
+  services: [
+    {
+      title: "Machine Learning & AI",
+      description: "Developing predictive models, natural language processing solutions, and intelligent automation systems to solve complex business problems.",
+      icon: "BrainCircuit"
+    },
+    {
+      title: "Data Science & Analytics",
+      description: "Transforming raw data into actionable insights through advanced statistical analysis, data visualization, and interactive dashboards.",
+      icon: "LineChart"
+    },
+    {
+      title: "Business Intelligence",
+      description: "Designing end-to-end BI pipelines using Power BI, Snowflake, and SQL to empower executives with real-time decision-making capabilities.",
+      icon: "PieChart"
+    }
+  ],
+
   certifications: [
     { title: "Microsoft Generative AI", issuer: "Microsoft" },
     { title: "Power BI Data Analyst", issuer: "Microsoft" },
