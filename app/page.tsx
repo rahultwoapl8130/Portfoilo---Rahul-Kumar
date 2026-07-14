@@ -6,6 +6,7 @@ import { portfolioData } from "./data";
 import ParticlesBackground from "../components/ParticlesBackground";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import Typewriter from "typewriter-effect";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -76,9 +77,25 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg md:text-2xl lg:text-3xl font-semibold mb-6 h-8 md:h-10"
+              className="text-lg md:text-2xl lg:text-3xl font-semibold mb-6 h-8 md:h-10 flex text-accent2"
             >
-              <div className="typing-container text-accent2 text-sm md:text-xl lg:text-2xl">Machine Learning | Data</div>
+              <span className="mr-2 text-ink">&gt;</span>
+              <Typewriter
+                options={{
+                  strings: [
+                    "Machine Learning Engineer",
+                    "Data Scientist",
+                    "AI Solutions Builder",
+                    "Business Analyst"
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 50,
+                  delay: 80,
+                  wrapperClassName: "text-accent2 font-mono",
+                  cursorClassName: "text-accent2 animate-pulse"
+                }}
+              />
             </motion.h2>
 
             <motion.p 
