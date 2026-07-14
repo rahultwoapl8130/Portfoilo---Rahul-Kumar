@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-base text-ink font-body antialiased;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible keyboard focus, kept consistent across the whole site */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid theme('colors.accent');
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Path-style section eyebrow, e.g. ~/about */
+.path-label {
+  @apply font-mono text-sm text-accent tracking-tight;
+}
+
+.path-label::before {
+  content: "~/";
+  color: theme('colors.muted');
+}
+
+/* Thin hairline divider used between sections */
+.hairline {
+  @apply border-t border-line;
+}
+
+/* Blinking terminal cursor used in the hero */
+.cursor-blink::after {
+  content: "_";
+  color: theme('colors.accent');
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Custom scrollbar to match the dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: theme('colors.base');
+}
+::-webkit-scrollbar-thumb {
+  background: theme('colors.line');
+  border-radius: 6px;
+}
