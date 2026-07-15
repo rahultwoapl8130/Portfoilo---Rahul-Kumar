@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { GitCommit, Github, Star } from "lucide-react";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 export default function GithubStats() {
   return (

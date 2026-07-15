@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BrainCircuit, LineChart, PieChart, Star } from "lucide-react";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 // Helper to get Lucide icons dynamically
 const getIcon = (iconName: string) => {

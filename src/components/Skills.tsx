@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 export default function Skills() {
   return (

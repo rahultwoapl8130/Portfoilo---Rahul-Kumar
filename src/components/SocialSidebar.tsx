@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 export default function SocialSidebar() {
   return (

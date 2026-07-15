@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Download, Github, Linkedin } from "lucide-react";
 import Typewriter from "typewriter-effect";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 export default function Hero() {
   return (

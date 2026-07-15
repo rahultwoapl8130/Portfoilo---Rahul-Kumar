@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 export default function Experience() {
   return (

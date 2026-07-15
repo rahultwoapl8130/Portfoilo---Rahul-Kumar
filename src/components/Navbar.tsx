@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 const navLinks = [
   { name: "Home", id: "home" },

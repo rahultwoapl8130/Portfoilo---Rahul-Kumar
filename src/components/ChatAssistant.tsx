@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageSquare, X, Send, Bot, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { portfolioData } from "../app/data";
+import { portfolioData } from "../data";
 
 interface Message {
   role: "bot" | "user";

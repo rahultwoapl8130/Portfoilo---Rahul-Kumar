@@ -1,23 +1,21 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import ParticlesBackground from "../components/ParticlesBackground";
-import LoadingScreen from "../components/LoadingScreen";
+import { motion } from "framer-motion";
+import ParticlesBackground from "./components/ParticlesBackground";
+import LoadingScreen from "./components/LoadingScreen";
 
-// Import new components
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import About from "../components/About";
-import Services from "../components/Services";
-import Skills from "../components/Skills";
-import Projects from "../components/Projects";
-import Experience from "../components/Experience";
-import GithubStats from "../components/GithubStats";
-import Contact from "../components/Contact";
-import SocialSidebar from "../components/SocialSidebar";
+// Import components
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Services from "./components/Services";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Experience from "./components/Experience";
+import GithubStats from "./components/GithubStats";
+import Contact from "./components/Contact";
+import SocialSidebar from "./components/SocialSidebar";
 
-export default function Home() {
+function App() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
 
@@ -79,3 +77,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default App;
