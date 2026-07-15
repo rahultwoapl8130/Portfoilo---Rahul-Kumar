@@ -26,45 +26,53 @@ export default function Navbar({ activeSection }: { activeSection: string }) {
   }, []);
 
   return (
-    <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-4xl">
-      <div className="flex items-center justify-between md:justify-center gap-2 md:gap-8 px-4 md:px-6 py-3 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-        {/* Brand/Name */}
-        <div className="hidden xl:flex items-center gap-2 mr-4 font-bold tracking-tight text-white whitespace-nowrap">
-          <div className="w-8 h-8 rounded-full bg-accent2/20 border border-accent2/50 flex items-center justify-center text-accent2 text-xs">
-            RK
+    <nav className="fixed top-4 md:top-6 left-0 w-full z-50 px-4 md:px-8">
+      <div className="flex items-center justify-between max-w-7xl mx-auto gap-4">
+        {/* Brand/Name Pill */}
+        <div className="hidden lg:flex items-center gap-3 px-4 py-2 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-lg font-bold tracking-tight text-white whitespace-nowrap">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent2 flex items-center justify-center text-white text-xs shadow-inner overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=256&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
           </div>
           Rahul Kumar
         </div>
         
-        <ul className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm font-medium text-muted overflow-x-auto no-scrollbar relative">
-          {navLinks.map((link, idx) => (
-            <li key={`${link.id}-${idx}`} className="relative z-10">
-              <a 
-                href={`#${link.id}`} 
-                className={`transition-colors px-3 py-1.5 md:px-4 md:py-2 block rounded-full ${activeSection === link.id ? 'text-white' : 'hover:text-ink'}`}
-              >
-                {link.name}
-                {activeSection === link.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-white/10 rounded-full -z-10"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Links Pill */}
+        <div className="flex-1 lg:flex-none flex justify-center">
+          <div className="flex items-center gap-1 md:gap-2 px-3 py-2 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-lg overflow-x-auto no-scrollbar w-full md:w-auto">
+            <ul className="flex items-center gap-1 md:gap-2 text-[10px] md:text-sm font-medium text-muted relative min-w-max mx-auto">
+              {navLinks.map((link, idx) => (
+                <li key={`${link.id}-${idx}`} className="relative z-10">
+                  <a 
+                    href={`#${link.id}`} 
+                    className={`transition-colors px-2 py-1.5 md:px-4 md:py-2 block rounded-full ${activeSection === link.id ? 'text-white' : 'hover:text-white'}`}
+                  >
+                    {link.name}
+                    {activeSection === link.id && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-white/10 rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-        {mounted && (
-          <button 
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="ml-2 flex-shrink-0 text-muted hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
-            aria-label="Toggle Dark Mode"
-          >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-        )}
+        {/* Theme Toggle Pill */}
+        <div className="hidden sm:flex items-center justify-center px-2 py-2 backdrop-blur-md bg-[#111111]/80 border border-white/10 rounded-full shadow-lg">
+          {mounted && (
+            <button 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="text-muted hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+              aria-label="Toggle Dark Mode"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

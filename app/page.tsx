@@ -15,6 +15,7 @@ import Projects from "../components/Projects";
 import Experience from "../components/Experience";
 import GithubStats from "../components/GithubStats";
 import Contact from "../components/Contact";
+import SocialSidebar from "../components/SocialSidebar";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -48,6 +49,7 @@ export default function Home() {
       
       <ParticlesBackground />
       <Navbar activeSection={activeSection} />
+      <SocialSidebar />
 
       <main className="relative z-10 pt-28 md:pt-32 pb-24 max-w-screen-xl mx-auto px-4 md:px-12">
         <Hero />
@@ -69,7 +71,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: activeSection !== 'home' ? 1 : 0 }}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 left-6 z-40 p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-accent2 hover:border-accent2 transition-all duration-300 shadow-lg backdrop-blur-md"
+        className="fixed bottom-6 right-6 z-40 p-3 bg-white/5 border border-white/10 rounded-full text-muted hover:text-accent2 hover:border-accent2 transition-all duration-300 shadow-lg backdrop-blur-md"
         aria-label="Back to top"
       >
         <div className="transform -rotate-90 text-xl font-bold leading-none">&gt;</div>
