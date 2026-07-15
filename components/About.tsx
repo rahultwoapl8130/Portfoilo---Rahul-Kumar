@@ -1,28 +1,38 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { portfolioData } from "../app/data";
+
 export default function About() {
   return (
-    <section id="about" className="hairline px-6 py-24 max-w-content mx-auto">
-      <p className="path-label mb-4">about</p>
-      <div className="grid md:grid-cols-[1fr_1.4fr] gap-10">
-        <h2 className="font-display font-600 text-3xl sm:text-4xl leading-tight">
-          A little about how I work.
-        </h2>
-        <div className="space-y-4 text-muted text-lg leading-relaxed">
-          {/* TODO: replace with your real background, 2-3 short paragraphs */}
-          <p>
-            Paragraph one — who you are, your core focus, and the kind of
-            problems you like solving. Keep it concrete: name the stack or
-            domain, not just adjectives.
-          </p>
-          <p>
-            Paragraph two — how you got here (education, prior roles, a
-            turning point) and what it taught you that shows up in your work
-            today.
-          </p>
-          <p>
-            Paragraph three — what you're focused on right now and what
-            you're looking for next.
-          </p>
-        </div>
+    <section id="about" className="scroll-mt-24 md:scroll-mt-32">
+      <h2 className="text-2xl md:text-3xl font-bold text-ink mb-6 md:mb-8 flex items-center gap-4">
+        <span className="text-accent2">01.</span> About Me
+        <div className="h-px bg-white/10 flex-grow"></div>
+      </h2>
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5 }}
+          className="text-muted leading-relaxed text-base md:text-lg backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-shadow lg:w-2/3"
+        >
+          <p>{portfolioData.about}</p>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="lg:w-1/3 w-full"
+        >
+          <img 
+            src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=600&auto=format&fit=crop" 
+            alt="Workspace" 
+            className="rounded-2xl border border-white/10 shadow-lg w-full object-cover h-64 lg:h-full"
+          />
+        </motion.div>
       </div>
     </section>
   );
